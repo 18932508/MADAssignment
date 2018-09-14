@@ -1,11 +1,13 @@
 package com.example.f8lin.a18932508madproject;
 
 public class Food {
+    private int id;
     private String name;
     private int cost;
     private int quantity;
 
-    public Food(String name, int cost, int quantity){
+    public Food(int id, String name, int cost, int quantity){
+        this.id = id;
         this.name = name;
         this.cost = cost;
         this.quantity = quantity;
@@ -35,4 +37,17 @@ public class Food {
     {
         return cost;
     }
+    public int getId()
+    {
+        return id;
+    }
+    public int getQuantity()
+    {
+        return quantity;
+    }
+    public void addQuantity()
+    {
+        quantity++;
+    }
+
 }

@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Menu menu = new Menu();
     private static List<Food> menuArray = new ArrayList<Food>();
-    private Food f = new Food(0,"", 0 ,0);
+    private Food f = new Food("", 0 ,0);
     private static int tableNumber = 0;
 
     @Override
@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        menuArray.add(new Food(1,"Chicken", 12, 0));
-        menuArray.add(new Food(2,"Beef", 15, 0));
-        menuArray.add(new Food(3,"Lamb", 18, 0));
-        menuArray.add(new Food(4,"Pork", 21, 0));
+        menuArray.add(new Food("Chicken", 12, 0));
+        menuArray.add(new Food("Beef", 15, 0));
+        menuArray.add(new Food("Lamb", 18, 0));
+        menuArray.add(new Food("Pork", 21, 0));
 
         Menu m = new Menu();
         //m.setMenuArray(menuArray);
@@ -39,12 +39,6 @@ public class MainActivity extends AppCompatActivity {
         startOrder = (Button) findViewById(R.id.startOrder);
         loadMenu = (Button) findViewById(R.id.loadMenu);
         warningView = (TextView) findViewById(R.id.warningView);
-
-        /*for(Food cn: menuArray)
-        {
-            String log = "Name: " +cn.getName() + " Cost: " + cn.getCost();
-            Log.d("TEST", log);
-        }*/
 
         startOrder.setOnClickListener(new View.OnClickListener() {
             @Override

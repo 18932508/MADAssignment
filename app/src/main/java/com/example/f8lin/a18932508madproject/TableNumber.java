@@ -33,7 +33,7 @@ public class TableNumber extends AppCompatActivity {
                 //MainActivity ma = new MainActivity();
                 MainActivity.setTableNumber(input);
 
-                Log.d("TEST","VALUE: " + Integer.toString(MainActivity.getTableNumber()));
+                //Log.d("TEST","VALUE: " + Integer.toString(MainActivity.getTableNumber()));
                 Intent loadOrderMain = new Intent(TableNumber.this, OrderMain.class);
                 startActivity(loadOrderMain);
 

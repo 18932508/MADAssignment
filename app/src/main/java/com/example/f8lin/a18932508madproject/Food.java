@@ -1,13 +1,14 @@
 package com.example.f8lin.a18932508madproject;
 
-public class Food {
-    private int id;
+import java.io.Serializable;
+
+public class Food implements Serializable{
     private String name;
     private int cost;
     private int quantity;
 
-    public Food(int id, String name, int cost, int quantity){
-        this.id = id;
+    public Food( String name, int cost, int quantity){
+        //this.id = id;
         this.name = name;
         this.cost = cost;
         this.quantity = quantity;
@@ -37,10 +38,6 @@ public class Food {
     {
         return cost;
     }
-    public int getId()
-    {
-        return id;
-    }
     public int getQuantity()
     {
         return quantity;
@@ -49,5 +46,12 @@ public class Food {
     {
         quantity++;
     }
-
+    public void decQuantity()
+    {
+        quantity--;
+    }
+    public String toString()
+    {
+        return "Name: " + getName() + ", Cost: " + getCost() + ", Quantity: " +getQuantity();
+    }
 }

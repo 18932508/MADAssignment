@@ -17,7 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".TableNumber" />
-        <activity android:name=".OrderMain"></activity>
+        <activity android:name=".OrderMain" />
+        <activity android:name=".OrderAdd" />
+        <activity android:name=".SubTotal"></activity>
     </application>
 
 </manifest>

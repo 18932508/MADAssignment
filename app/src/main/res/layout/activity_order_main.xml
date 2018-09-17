@@ -6,15 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".OrderMain">
 
-    <FrameLayout
-        android:id="@+id/your_placeholder"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/menuListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/warningTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Order So Far" />
+
+        <ListView
+            android:id="@+id/orderListView"
+            android:layout_width="match_parent"
+            android:layout_height="449dp">
+
+        </ListView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/addToOrderButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Add To Order" />
+
+            <Button
+                android:id="@+id/subTotalButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="SUB TOTAL" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

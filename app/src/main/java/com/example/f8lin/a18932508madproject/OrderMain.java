@@ -1,15 +1,16 @@
 package com.example.f8lin.a18932508madproject;
 
-import android.support.v4.app.FragmentManager;
-import android.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,69 +18,109 @@ import java.util.List;
 public class OrderMain extends AppCompatActivity {
 
     private static List<Food> menuArray = new ArrayList<Food>();
-    private static List<Food> orderArray = new ArrayList<>();
-    private MenuListAdapter adapter;
-    private ListView menuListView;
+    private static ArrayList<Food> orderArray = new ArrayList<>();
+    private OrderListAdapter adapter;
+    private ListView orderListView;
+    private TextView warningText;
+    private Button addToOrder;
+    private Button subTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_main);
 
-        menuListView = (ListView) findViewById(R.id.menuListView);
+        orderListView = (ListView) findViewById(R.id.orderListView);
+        warningText = (TextView)  findViewById(R.id.warningTextView);
+        addToOrder = (Button) findViewById(R.id.addToOrderButton);
+        subTotal = (Button) findViewById(R.id.subTotalButton);
+
         menuArray = MainActivity.getMenuArray();
 
-        Log.d("TEST","VALUE: " + Integer.toString(MainActivity.getTableNumber()));
+        checkWarningText();
 
-        /*for(Food cn: menuArray)
-        {
-            String log = "Name: " +cn.getName() + " Cost: " + cn.getCost();
-            Log.d("TEST", log);
-        }*/
+        adapter = new OrderListAdapter(this, R.layout.order_main_item, orderArray);
+        orderListView.setAdapter(adapter);
 
-        adapter = new MenuListAdapter(getApplicationContext(), menuArray);
-        menuListView.setAdapter(adapter);
-
-        menuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Food food = menuArray.get(i);
-                addToOrderArray(food);
-
-                Toast.makeText(getApplicationContext(), "Click Product id = " + view.getTag(), Toast.LENGTH_SHORT).show();
+                Food food = (Food) adapterView.getAdapter().getItem(i);
+                minusFoodItem(food);
+                //Toast.makeText(getApplicationContext(), "Click Product id = " + view.getTag(), Toast.LENGTH_SHORT).show();
             }
         });
 
+        addToOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(OrderMain.this , OrderAdd.class);
+                startActivityForResult(i,1);
+            }
+        });
+        subTotal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //add check for empty order array and make pop up if it happens!!!
+                Intent i = new Intent(OrderMain.this, SubTotal.class);
+                startActivity(i);
+            }
+        });
     }
-    public static void addToOrderArray(Food food)
-    {
-        Log.d("TEST", "got to add");
-        String log = "Name: " + food.getName() + " Cost: " + food.getCost() + ", Quantity: " + food.getQuantity();
-        Log.d("TEST", log);
 
-        for(Food cn: orderArray) {
-            Log.d("TEST", "got to FOR");
-            if (cn.getName().equalsIgnoreCase(food.getName())) {
-                Log.d("TEST", "got to IF");
-                //increment quantity;
-                food.addQuantity();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-                String log2 = "Name: " + cn.getName() + " Cost: " + cn.getCost() + ", Quantity: " + cn.getQuantity();
-                Log.d("TEST", log2);
-                break;
+        Log.d("TEST", "BACK");
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                //ArrayList<Food> test = (ArrayList<Food>) data.getSerializableExtra("results");
+                ArrayList<Food> test = OrderAdd.getOrderArray();
+                setOrderArray(test);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
             }
         }
-        Log.d("TEST", "got to ELSE");
-        
-        orderArray.add(food);
-
-        Log.d("TEST", "got to add END");
-        /*for(Food cn: orderArray)
-        {
-            String log = "Name: " + cn.getName() + " Cost: " + cn.getCost() + ", Quantity: " +cn.getQuantity();
-            Log.d("TEST", log);
-        }*/
     }
 
+    public void setOrderArray (ArrayList ar)
+    {
+        orderArray = ar;
+        for(Food f: orderArray)
+        {
+            String memes = f.getName() + " " + f.getQuantity();
+            Log.d("TEST", memes);
+        }
+        adapter.updateReceiptsList(orderArray);
+    }
+    public void minusFoodItem (Food food)
+    {
+        Log.d("Test", "minusFoodItem");
+        food.decQuantity();
+        if(food.getQuantity() == 0)
+        {
+            orderArray.remove(food);
+            checkWarningText();
+            adapter.updateReceiptsList(orderArray);
+            return;
+        }
+        adapter.updateReceiptsList(orderArray);
+        checkWarningText();
+    }
+    public void checkWarningText()
+    {
+        if(orderArray.size() == 0) {
+            warningText.setText("There is nothing in the Order");
+        }
+        else
+        {
+            warningText.setText("Current Order");
+        }
+    }
+
+    public static ArrayList<Food> getOrderArray() {
+        return orderArray;
+    }
 }

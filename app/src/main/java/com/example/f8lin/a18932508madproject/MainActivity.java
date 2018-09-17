@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     TextView warningView = null;
 
     private Menu menu = new Menu();
-    private static List<Food> menuArray = new ArrayList<Food>();
+    private static ArrayList<Food> menuArray = new ArrayList<Food>();
     private Food f = new Food("", 0 ,0);
     private static int tableNumber = 0;
 
@@ -28,17 +28,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        menuArray.add(new Food("Chicken", 12, 0));
-        menuArray.add(new Food("Beef", 15, 0));
-        menuArray.add(new Food("Lamb", 18, 0));
-        menuArray.add(new Food("Pork", 21, 0));
-
-        Menu m = new Menu();
-        //m.setMenuArray(menuArray);
+        menuArray.add(new Food("Chicken Burger", 12, 0));
+        menuArray.add(new Food("Beef Pie", 15, 0));
+        menuArray.add(new Food("Lamb Shanks", 18, 0));
+        menuArray.add(new Food("Pork Chops", 21, 0));
+        menuArray.add(new Food("Cheese Burger", 17, 0));
+        menuArray.add(new Food("Chicken Chop", 20, 0));
+        menuArray.add(new Food("Vanilla Waffles with Homemade IceCream", 25, 0));
 
         startOrder = (Button) findViewById(R.id.startOrder);
         loadMenu = (Button) findViewById(R.id.loadMenu);
-        warningView = (TextView) findViewById(R.id.warningView);
+        //warningView = (TextView) findViewById(R.id.warningView);
 
         startOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     {
         return tableNumber;
     }
-    public static List<Food> getMenuArray()
+    public static ArrayList<Food> getMenuArray()
     {
         return menuArray;
     }

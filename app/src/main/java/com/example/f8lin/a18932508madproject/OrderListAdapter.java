@@ -45,10 +45,6 @@ public class OrderListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
-
-        //View itemView = view;
-        //itemView = (itemView == null) ? inflater.inflate(R.layout.order_main_item, null): itemView;
-        //if(convertView = null)
         inflater = LayoutInflater.from(mContext);
         view = inflater.inflate(mResource, viewGroup, false);
 

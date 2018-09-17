@@ -9,5 +9,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/subtotalWelcome"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:text="Final Subtotal" />
+
+        <ListView
+            android:id="@+id/subtotalView"
+            android:layout_width="match_parent"
+            android:layout_height="425dp">
+
+        </ListView>
+
+        <TextView
+            android:id="@+id/totalCost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/backButtonST"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

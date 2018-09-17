@@ -1,29 +1,30 @@
 package com.example.f8lin.a18932508madproject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class OrderMain extends AppCompatActivity {
 
-    private static List<Food> menuArray = new ArrayList<Food>();
     private static ArrayList<Food> orderArray = new ArrayList<>();
     private OrderListAdapter adapter;
     private ListView orderListView;
     private TextView warningText;
+    private TextView totalView;
     private Button addToOrder;
     private Button subTotal;
+    private int total;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +33,9 @@ public class OrderMain extends AppCompatActivity {
 
         orderListView = (ListView) findViewById(R.id.orderListView);
         warningText = (TextView)  findViewById(R.id.warningTextView);
+        totalView = (TextView)  findViewById(R.id.totalView);
         addToOrder = (Button) findViewById(R.id.addToOrderButton);
         subTotal = (Button) findViewById(R.id.subTotalButton);
-
-        menuArray = MainActivity.getMenuArray();
 
         checkWarningText();
 
@@ -47,7 +47,7 @@ public class OrderMain extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Food food = (Food) adapterView.getAdapter().getItem(i);
                 minusFoodItem(food);
-                //Toast.makeText(getApplicationContext(), "Click Product id = " + view.getTag(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Minus Food", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -63,51 +63,47 @@ public class OrderMain extends AppCompatActivity {
             public void onClick(View view) {
                 //add check for empty order array and make pop up if it happens!!!
                 Intent i = new Intent(OrderMain.this, SubTotal.class);
-                startActivity(i);
+                startActivityForResult(i ,2);
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        Log.d("TEST", "BACK");
-
         if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
-                //ArrayList<Food> test = (ArrayList<Food>) data.getSerializableExtra("results");
-                ArrayList<Food> test = OrderAdd.getOrderArray();
-                setOrderArray(test);
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
+            setOrderArray();
+        }
+        if(requestCode == 2)
+        {
+            setOrderArray();
         }
     }
 
-    public void setOrderArray (ArrayList ar)
+    public void setOrderArray ()
     {
-        orderArray = ar;
         for(Food f: orderArray)
         {
             String memes = f.getName() + " " + f.getQuantity();
             Log.d("TEST", memes);
         }
         adapter.updateReceiptsList(orderArray);
+        getTotal();
     }
     public void minusFoodItem (Food food)
     {
-        Log.d("Test", "minusFoodItem");
         food.decQuantity();
         if(food.getQuantity() == 0)
         {
             orderArray.remove(food);
             checkWarningText();
+            getTotal();
             adapter.updateReceiptsList(orderArray);
             return;
         }
+        getTotal();
         adapter.updateReceiptsList(orderArray);
         checkWarningText();
+        return;
     }
     public void checkWarningText()
     {
@@ -119,8 +115,20 @@ public class OrderMain extends AppCompatActivity {
             warningText.setText("Current Order");
         }
     }
-
     public static ArrayList<Food> getOrderArray() {
         return orderArray;
+    }
+    public static void setOrderArrayList(ArrayList<Food> fl)
+    {
+        orderArray = fl;
+    }
+    public void getTotal()
+    {
+        total = 0;
+        for (Food f: orderArray)
+        {
+            total+= f.getQuantity() * f.getCost();
+        }
+        totalView.setText("Your current Total is $ " + String.valueOf(total));
     }
 }

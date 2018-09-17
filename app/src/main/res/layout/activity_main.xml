@@ -11,13 +11,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/warningView"
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="69dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="379dp" />
+            android:layout_height="411dp"
+            app:srcCompat="@drawable/app_logo" />
 
         <Button
             android:id="@+id/startOrder"

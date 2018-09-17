@@ -1,12 +1,9 @@
 package com.example.f8lin.a18932508madproject;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -39,8 +36,6 @@ public class OrderAdd extends AppCompatActivity implements TextWatcher {
 
         menuArray = MainActivity.getMenuArray();
 
-        Log.d("TEST","VALUE: " + Integer.toString(MainActivity.getTableNumber()));
-
         adapter = new MenuListAdapter(this, R.layout.fragment_order_food, menuArray);
         menuListView.setAdapter(adapter);
 
@@ -56,17 +51,8 @@ public class OrderAdd extends AppCompatActivity implements TextWatcher {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //OrderMain.setOrderArray();
-
-                Intent returnIntent = new Intent();
-                Bundle b = new Bundle();
-                b.putSerializable("results", orderArray);
-                returnIntent.putExtras(b);
-                setResult(Activity.RESULT_OK, returnIntent);
+                OrderMain.setOrderArrayList(orderArray);
                 finish();
-
-                //Intent loadOrderMain = new Intent(OrderAdd.this, OrderMain.class);
-                //startActivity(loadOrderMain);
             }
         });
 
@@ -77,7 +63,6 @@ public class OrderAdd extends AppCompatActivity implements TextWatcher {
         for(Food f: orderArray) {
             if (f.getName().equalsIgnoreCase(food.getName())) {
                 f.addQuantity();
-                Log.d("TEST", f.getName() + f.getQuantity());
                 return;
             }
         }

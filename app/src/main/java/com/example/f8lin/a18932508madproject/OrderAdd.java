@@ -1,5 +1,6 @@
 package com.example.f8lin.a18932508madproject;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,12 +18,10 @@ public class OrderAdd extends AppCompatActivity implements TextWatcher {
 
     private static List<Food> menuArray = new ArrayList<Food>();
     private static ArrayList<Food> orderArray = new ArrayList<Food>();
-    //private static List<Food> menuToShow = new ArrayList<>();
     private MenuListAdapter adapter;
     private ListView menuListView;
     private EditText searchFood;
     private Button backButton;
-    //private SearchView searchMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +68,14 @@ public class OrderAdd extends AppCompatActivity implements TextWatcher {
         orderArray.add(food);
         food.addQuantity();
     }
-
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
     }
-
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         this.adapter.getFilter().filter(charSequence);
     }
-
     @Override
     public void afterTextChanged(Editable editable) {
 
@@ -87,6 +83,13 @@ public class OrderAdd extends AppCompatActivity implements TextWatcher {
     public static ArrayList<Food> getOrderArray()
     {
         return orderArray;
+    }
+    //@Override
+    public void OnBackPressed()
+    {
+        OrderMain.setOrderArrayList(orderArray);
+        Intent intent = new Intent(this, OrderMain.class);
+        startActivity(intent);
     }
 
 }

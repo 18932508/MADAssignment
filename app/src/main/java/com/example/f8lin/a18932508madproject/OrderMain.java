@@ -38,6 +38,7 @@ public class OrderMain extends AppCompatActivity {
         subTotal = (Button) findViewById(R.id.subTotalButton);
 
         checkWarningText();
+        Log.d("TEST", "onCreate() OrderMain");
 
         adapter = new OrderListAdapter(this, R.layout.order_main_item, orderArray);
         orderListView.setAdapter(adapter);
@@ -61,13 +62,16 @@ public class OrderMain extends AppCompatActivity {
         subTotal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //add check for empty order array and make pop up if it happens!!!
-                Intent i = new Intent(OrderMain.this, SubTotal.class);
-                startActivityForResult(i ,2);
+                if(orderArray.size() == 0) {
+                    Toast.makeText(getApplicationContext(), "Please add items to the order before proceeding", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent i = new Intent(OrderMain.this, SubTotal.class);
+                    startActivityForResult(i, 2);
+                }
             }
         });
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
@@ -78,9 +82,9 @@ public class OrderMain extends AppCompatActivity {
             setOrderArray();
         }
     }
-
     public void setOrderArray ()
     {
+        checkWarningText();
         for(Food f: orderArray)
         {
             String memes = f.getName() + " " + f.getQuantity();
@@ -103,7 +107,6 @@ public class OrderMain extends AppCompatActivity {
         getTotal();
         adapter.updateReceiptsList(orderArray);
         checkWarningText();
-        return;
     }
     public void checkWarningText()
     {
@@ -130,5 +133,16 @@ public class OrderMain extends AppCompatActivity {
             total+= f.getQuantity() * f.getCost();
         }
         totalView.setText("Your current Total is $ " + String.valueOf(total));
+    }
+    public void OnBackPressed()
+    {
+        OrderAdd.getOrderArray();
+    }
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        checkWarningText();
+        OnBackPressed();
     }
 }

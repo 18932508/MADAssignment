@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +38,7 @@ public class OrderMain extends AppCompatActivity {
 
         checkWarningText();
         Log.d("TEST", "onCreate() OrderMain");
+        Log.d("TEST", String.valueOf(MainActivity.getTableNumber()));
 
         adapter = new OrderListAdapter(this, R.layout.order_main_item, orderArray);
         orderListView.setAdapter(adapter);
@@ -48,7 +48,6 @@ public class OrderMain extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Food food = (Food) adapterView.getAdapter().getItem(i);
                 minusFoodItem(food);
-                //Toast.makeText(getApplicationContext(), "Minus Food", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -136,7 +135,7 @@ public class OrderMain extends AppCompatActivity {
     }
     public void OnBackPressed()
     {
-        OrderAdd.getOrderArray();
+        orderArray = OrderAdd.getOrderArray();
     }
     @Override
     public void onRestart()

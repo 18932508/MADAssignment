@@ -7,7 +7,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,35 +37,35 @@ public class MainActivity extends AppCompatActivity {
     Button loadMenu = null;
     TextView warningView = null;
 
-    private Menu menu = new Menu();
     private static ArrayList<Food> menuArray = new ArrayList<Food>();
+    private static ArrayList<Food> orderArray = new ArrayList<Food>();
     private Food f = new Food("", 0 ,0);
     private static int tableNumber = 0;
+    private RequestQueue mQueue;
+    private int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        menuArray.add(new Food("Chicken Burger", 12, 0));
-        menuArray.add(new Food("Beef Pie", 15, 0));
-        menuArray.add(new Food("Lamb Shanks", 18, 0));
-        menuArray.add(new Food("Pork Chops", 21, 0));
-        menuArray.add(new Food("Cheese Burger", 17, 0));
-        menuArray.add(new Food("Chicken Chop", 20, 0));
-        menuArray.add(new Food("Vanilla Waffles with Homemade IceCream", 25, 0));
-
         startOrder = (Button) findViewById(R.id.startOrder);
         loadMenu = (Button) findViewById(R.id.loadMenu);
-        //warningView = (TextView) findViewById(R.id.warningView);
 
+        mQueue = Volley.newRequestQueue(this);
+
+        loadMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                jsonParse();
+            }
+        });
         startOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(menuArray == null)
+                if(getMenuArraySize() == 0)
                 {
-                    String str = "Menu is empty ya dingdong";
-                    warningView.setText(str);
+                    Toast.makeText(getApplicationContext(), "Please press load menu before proceeding", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -56,13 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        loadMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            //do this later
-            }
-        });
-
     }
     public static void setTableNumber(int a)
     {
@@ -72,8 +84,41 @@ public class MainActivity extends AppCompatActivity {
     {
         return tableNumber;
     }
+    public int getMenuArraySize()
+    {
+        return menuArray.size();
+    }
     public static ArrayList<Food> getMenuArray()
     {
         return menuArray;
+    }
+    public void jsonParse() {
+        String url = "https://api.myjson.com/bins/1337d0";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("menu");
+                            for(i = 0; i < jsonArray.length(); i++)
+                            {
+                                JSONObject food = jsonArray.getJSONObject(i);
+                                menuArray.add(new Food(food.getString("name"), food.getInt("cost"), 0));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        mQueue.add(request);
+
     }
 }

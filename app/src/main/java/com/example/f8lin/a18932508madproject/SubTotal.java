@@ -1,10 +1,7 @@
 package com.example.f8lin.a18932508madproject;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -50,8 +47,8 @@ public class SubTotal extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                OrderMain.setOrderArrayList(orderSubTotal);
                 finish();
-
             }
         });
     }

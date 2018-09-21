@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +33,8 @@ public class OrderAdd extends AppCompatActivity implements TextWatcher {
         menuListView = (ListView) findViewById(R.id.menuListView);
         searchFood = (EditText) findViewById(R.id.searchFood);
         searchFood.addTextChangedListener(this);
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         menuArray = MainActivity.getMenuArray();
 
@@ -84,12 +87,11 @@ public class OrderAdd extends AppCompatActivity implements TextWatcher {
     {
         return orderArray;
     }
-    //@Override
-    public void OnBackPressed()
+    @Override
+    public void onBackPressed()
     {
         OrderMain.setOrderArrayList(orderArray);
-        Intent intent = new Intent(this, OrderMain.class);
-        startActivity(intent);
+        finish();
     }
 
 }

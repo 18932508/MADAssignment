@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class OrderMain extends AppCompatActivity {
 
     private static ArrayList<Food> orderArray = new ArrayList<>();
+    private static ArrayList<Food> orderArrayTemp = new ArrayList<>();
     private OrderListAdapter adapter;
     private ListView orderListView;
     private TextView warningText;
@@ -40,14 +41,19 @@ public class OrderMain extends AppCompatActivity {
         Log.d("TEST", "onCreate() OrderMain");
         Log.d("TEST", String.valueOf(MainActivity.getTableNumber()));
 
+        orderArray =  MainActivity.getOrderArray();
+
         adapter = new OrderListAdapter(this, R.layout.order_main_item, orderArray);
         orderListView.setAdapter(adapter);
+
+        Log.d("REEEEEEEEEEEE", "ordermain on create");
 
         orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Food food = (Food) adapterView.getAdapter().getItem(i);
                 minusFoodItem(food);
+                //Toast.makeText(getApplicationContext(), "Minus Food", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -73,7 +79,8 @@ public class OrderMain extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
+        if (requestCode == 1)
+        {
             setOrderArray();
         }
         if(requestCode == 2)
@@ -84,11 +91,6 @@ public class OrderMain extends AppCompatActivity {
     public void setOrderArray ()
     {
         checkWarningText();
-        for(Food f: orderArray)
-        {
-            String memes = f.getName() + " " + f.getQuantity();
-            Log.d("TEST", memes);
-        }
         adapter.updateReceiptsList(orderArray);
         getTotal();
     }
@@ -133,15 +135,21 @@ public class OrderMain extends AppCompatActivity {
         }
         totalView.setText("Your current Total is $ " + String.valueOf(total));
     }
-    public void OnBackPressed()
+    @Override
+    public void onBackPressed()
     {
-        orderArray = OrderAdd.getOrderArray();
+        Log.d("REEEEEEEEEEEE", "ordermain onBackPressed");
+        MainActivity.setOrderArray(orderArray);
+        finish();
     }
     @Override
     public void onRestart()
     {
         super.onRestart();
+        Log.d("REEEEEEEEEEEE", "ordermain on restart");
+        orderArray = MainActivity.getOrderArray();
         checkWarningText();
-        OnBackPressed();
+        adapter.updateReceiptsList(orderArray);
+        //OnBackPressed();
     }
 }

@@ -92,6 +92,14 @@ public class MainActivity extends AppCompatActivity {
     {
         return menuArray;
     }
+    public static ArrayList<Food> getOrderArray()
+    {
+        return orderArray;
+    }
+    public static void setOrderArray(ArrayList<Food> f1)
+    {
+        orderArray = f1;
+    }
     public void jsonParse() {
         String url = "https://api.myjson.com/bins/1337d0";
 

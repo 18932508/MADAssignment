@@ -90,7 +90,7 @@ public class OrderAdd extends AppCompatActivity implements TextWatcher {
     @Override
     public void onBackPressed()
     {
-        MainActivity.setOrderArray(orderArray);
+        OrderMain.setOrderArrayList(orderArray);
         finish();
     }
 

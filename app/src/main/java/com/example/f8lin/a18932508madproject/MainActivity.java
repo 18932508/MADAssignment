@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         startOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(getMenuArraySize() == 0)
+                if(getMenuArraySize() < 1)
                 {
                     Toast.makeText(getApplicationContext(), "Please press load menu before proceeding", Toast.LENGTH_SHORT).show();
                 }
@@ -92,15 +92,8 @@ public class MainActivity extends AppCompatActivity {
     {
         return menuArray;
     }
-    public static ArrayList<Food> getOrderArray()
-    {
-        return orderArray;
-    }
-    public static void setOrderArray(ArrayList<Food> f1)
-    {
-        orderArray = f1;
-    }
     public void jsonParse() {
+        final ArrayList<Food> foodTemp = new ArrayList<>();
         String url = "https://api.myjson.com/bins/1337d0";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -112,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                             for(i = 0; i < jsonArray.length(); i++)
                             {
                                 JSONObject food = jsonArray.getJSONObject(i);
-                                menuArray.add(new Food(food.getString("name"), food.getInt("cost"), 0));
+                                foodTemp.add(new Food(food.getString("name"), food.getInt("cost"), 0));
                             }
 
                         } catch (JSONException e) {
@@ -125,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 error.printStackTrace();
             }
         });
-
+        menuArray = foodTemp;
         mQueue.add(request);
 
     }

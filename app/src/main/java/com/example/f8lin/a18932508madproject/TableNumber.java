@@ -45,7 +45,7 @@ public class TableNumber extends AppCompatActivity implements AdapterView.OnItem
                 MainActivity.setTableNumber(temp);
 
                 Intent loadOrderMain = new Intent(TableNumber.this, OrderMain.class);
-                startActivity(loadOrderMain);
+                startActivityForResult(loadOrderMain, 1);
             }
         });
 
@@ -62,5 +62,16 @@ public class TableNumber extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1)
+        {
+            setOrderArray();
+        }
+    }
+    public void setOrderArray()
+    {
+        OrderMain.setOrderArrayList(OrderMain.getOrderArray());
     }
 }

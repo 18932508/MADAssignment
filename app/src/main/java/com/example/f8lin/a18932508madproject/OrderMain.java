@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static android.view.View.GONE;
+
 public class OrderMain extends AppCompatActivity {
 
     private static ArrayList<Food> orderArray = new ArrayList<>();
@@ -21,6 +23,10 @@ public class OrderMain extends AppCompatActivity {
     private ListView orderListView;
     private TextView warningText;
     private TextView totalView;
+    private TextView costView;
+    private TextView qtyView;
+    private TextView nameView;
+    private TextView prompt;
     private Button addToOrder;
     private Button subTotal;
     private int total;
@@ -34,14 +40,16 @@ public class OrderMain extends AppCompatActivity {
         orderListView = (ListView) findViewById(R.id.orderListView);
         warningText = (TextView)  findViewById(R.id.warningTextView);
         totalView = (TextView)  findViewById(R.id.totalView);
+        costView = (TextView)  findViewById(R.id.textView3);
+        nameView = (TextView)  findViewById(R.id.textView4);
+        qtyView = (TextView)  findViewById(R.id.textView5);
+        prompt = (TextView) findViewById(R.id.textView8);
         addToOrder = (Button) findViewById(R.id.addToOrderButton);
         subTotal = (Button) findViewById(R.id.subTotalButton);
 
         checkWarningText();
         Log.d("TEST", "onCreate() OrderMain");
         Log.d("TEST", String.valueOf(MainActivity.getTableNumber()));
-
-        orderArray =  MainActivity.getOrderArray();
 
         adapter = new OrderListAdapter(this, R.layout.order_main_item, orderArray);
         orderListView.setAdapter(adapter);
@@ -113,10 +121,18 @@ public class OrderMain extends AppCompatActivity {
     {
         if(orderArray.size() == 0) {
             warningText.setText("There is nothing in the Order");
+            nameView.setVisibility(View.GONE);
+            costView.setVisibility(View.GONE);
+            qtyView.setVisibility(View.GONE);
+            prompt.setVisibility(View.GONE);
         }
         else
         {
             warningText.setText("Current Order");
+            nameView.setVisibility(View.VISIBLE);
+            costView.setVisibility(View.VISIBLE);
+            qtyView.setVisibility(View.VISIBLE);
+            prompt.setVisibility(View.VISIBLE);
         }
     }
     public static ArrayList<Food> getOrderArray() {
@@ -139,7 +155,6 @@ public class OrderMain extends AppCompatActivity {
     public void onBackPressed()
     {
         Log.d("REEEEEEEEEEEE", "ordermain onBackPressed");
-        MainActivity.setOrderArray(orderArray);
         finish();
     }
     @Override
@@ -147,7 +162,7 @@ public class OrderMain extends AppCompatActivity {
     {
         super.onRestart();
         Log.d("REEEEEEEEEEEE", "ordermain on restart");
-        orderArray = MainActivity.getOrderArray();
+        orderArray = OrderAdd.getOrderArray();
         checkWarningText();
         adapter.updateReceiptsList(orderArray);
         //OnBackPressed();

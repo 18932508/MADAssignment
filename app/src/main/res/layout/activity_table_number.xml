@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:text="Please select a Table Number"
             tools:layout_editor_absoluteX="115dp"
-            tools:layout_editor_absoluteY="178dp" />
+            tools:layout_editor_absoluteY="178dp"
+            android:textSize="20dp"/>
 
         <Spinner
             android:id="@+id/tableNumberSpinner"
